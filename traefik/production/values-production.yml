@@ -1,0 +1,35 @@
+# values.yaml
+ingressRoute:
+  dashboard:
+    enabled: true
+    matchRule: Host(`dashboard.localhost`)
+
+# Enable Gateway API support
+providers:
+  kubernetesGateway:
+    enabled: true
+# Disable automatic creation of GatewayClass and Gateway
+gatewayClass:
+  enabled: false
+gateway:
+  enabled: false
+
+# Access logs are disabled by default
+logs:
+  access:
+    enabled: true
+
+# Configure High Availablity
+deployment:
+  replicas: 2
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+# Schedule traefik instances on different nodes
+affinity:
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: traefik
+        topologyKey: kubernetes.io/hostname
