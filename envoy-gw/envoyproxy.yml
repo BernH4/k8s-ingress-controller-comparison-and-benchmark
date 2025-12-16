@@ -1,0 +1,22 @@
+# Configuration file for the Envoy Proxy
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: EnvoyProxy
+metadata:
+  name: custom-proxy-config
+  namespace: default
+spec:
+  provider:
+    type: Kubernetes
+    kubernetes:
+      envoyPDB:
+        minAvailable: 1
+      envoyDeployment:
+        replicas: 2
+        pod:
+          topologySpreadConstraints:
+            - labelSelector:
+                matchLabels:
+                  app.gateway.envoyproxy.io/name: envoy 
+              maxSkew: 1
+              topologyKey: kubernetes.io/hostname
+              whenUnsatisfiable: DoNotSchedule
