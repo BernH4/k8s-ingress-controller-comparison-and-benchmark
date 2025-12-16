@@ -1,0 +1,16 @@
+# Helm chart values for adding high availability functionality
+gateway:
+  replicaCount: 2
+  podDisruptionBudget:
+    enabled: true
+    minAvailable: 1
+  topologySpreadConstraints:
+    - labelSelector:
+        matchLabels:
+          app: kong-gateway
+      maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: DoNotSchedule
+
+# Now documentation found on how to configure access logs, altough some basic logging is configured 
+# by default
