@@ -114,16 +114,16 @@ kubectl port-forward -n traefik deployment/traefik 8080:8080
 
 ### Deployment
 
-Deploy the Traefik specific GatewayClass
+Deploy the Traefik specific GatewayClass and Gateway
 
 ```sh
+kubectl apply -f traefik/production/gateway.yml
 kubectl apply -f traefik/production/gatewayclass.yml
 ```
 
-Deploy a custom web-app, httproute, and gateway that will be reused by all gateways.
+Deploy a custom web-app and httproute that will be reused by all gateways.
 
 ```sh
-kubectl apply -f common_config_files/gateway.yml
 kubectl apply -f common_config_files/web-app-1.yml
 kubectl apply -f common_config_files/httproute.yml
 ```
@@ -139,7 +139,7 @@ kubectl get -n default gatewayclass,gateway,httproute,deploy,svc,pods
 Verify the application is accessible (make sure to cancel earlier port-forward):
 
 ```sh
-kubectl port-forward -n traefik svc/traefik 8000:80
+kubectl port-forward -n traefik service/traefik 8000:80
 ```
 
 ```sh

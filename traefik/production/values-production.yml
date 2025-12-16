@@ -26,10 +26,10 @@ podDisruptionBudget:
   enabled: true
   minAvailable: 1
 # Schedule traefik instances on different nodes
-affinity:
-  podAntiAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution:
-      - labelSelector:
-          matchLabels:
-            app.kubernetes.io/name: traefik
-        topologyKey: kubernetes.io/hostname
+topologySpreadConstraints:
+  - labelSelector:
+      matchLabels:
+        app.kubernetes.io/name: traefik 
+    maxSkew: 1
+    topologyKey: kubernetes.io/hostname
+    whenUnsatisfiable: DoNotSchedule
