@@ -54,12 +54,3 @@ Because we are using a local CA, browsers and tools will treat the certificate a
 kubectl get secret root-secret -n cert-manager -o jsonpath='{.data.tls\.crt}' | base64 -d > ca.crt
 curl --cacert ca.crt https://web-app.localhost:8443
 ```
-
-Optionally, you can extract the Root CA certificate from the cluster and add it to your local trust store to avoid self-signed certificate warnings:
-
-```sh
-# Extract root cert to 'ca.crt'
-kubectl get secret root-secret -n cert-manager -o jsonpath='{.data.tls\.crt}' | base64 -d > ca.crt
-
-# Now import it in your OS or Browser
-```
