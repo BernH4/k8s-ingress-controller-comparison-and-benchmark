@@ -7,7 +7,7 @@ shell: bash
 ## 1. Create Kubernetes Cluster
 
 ```sh
-kind create cluster --config kind-config.yml --name cluster-traefik
+kind create cluster --config ../kind-config-3-worker-nodes.yml --name cluster-traefik
 ```
 
 ## Quickstart
@@ -26,7 +26,7 @@ helm repo update
 Install Traefik using the provided quickstart values:
 
 ```sh
-helm install traefik traefik/traefik -f traefik/quickstart/values-quickstart.yml --wait
+helm install traefik traefik/traefik -f quickstart/values-quickstart.yml --wait
 ```
 
 ### Access Dashboard
@@ -65,7 +65,7 @@ Recreate the cluster to continue testing a more production like deployment
 
 ```sh
 kind delete cluster -n cluster-traefik
-kind create cluster --config kind-config.yml --name cluster-traefik
+kind create cluster --config kind-config-3-worker-nodes.yml --name cluster-traefik
 ```
 
 ## Production deployment
@@ -92,7 +92,7 @@ helm install traefik traefik/traefik \
   --version "37.4.0" \
   --namespace traefik \
   --create-namespace \
-  --values traefik/production/values-production.yml
+  --values production/values-production.yml
 ```
 
 As Traefik was configured to be HA (High Available), two traefik pods should now be running:
@@ -117,15 +117,15 @@ kubectl port-forward -n traefik deployment/traefik 8080:8080
 Deploy the Traefik specific GatewayClass and Gateway
 
 ```sh
-kubectl apply -f traefik/production/gateway.yml
-kubectl apply -f traefik/production/gatewayclass.yml
+kubectl apply -f production/gateway.yml
+kubectl apply -f production/gatewayclass.yml
 ```
 
 Deploy a custom web-app and httproute that will be reused by all gateways.
 
 ```sh
-kubectl apply -f common_config_files/web-app-1.yml
-kubectl apply -f common_config_files/httproute.yml
+kubectl apply -f ../common_config_files/web-app-1.yml
+kubectl apply -f ../common_config_files/httproute.yml
 ```
 
 All deployed ressources should now be working fine:

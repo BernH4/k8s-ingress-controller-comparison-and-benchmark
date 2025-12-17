@@ -7,7 +7,7 @@ shell: bash
 ## 1. Create Kubernetes Cluster
 
 ```sh
-kind create cluster --config kind-config.yml --name cluster-kong
+kind create cluster --config kind-config-3-worker-nodes.yml --name cluster-kong
 ```
 
 ## Quickstart

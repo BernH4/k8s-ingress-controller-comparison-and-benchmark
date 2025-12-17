@@ -5,8 +5,10 @@ metadata:
   namespace: default
 spec:
   parentRefs:
-    # Must be same name as created gateway
     - name: gateway
+      sectionName: web
+    - name: gateway
+      sectionName: websecure
   hostnames:
     - "web-app.localhost"
   rules:

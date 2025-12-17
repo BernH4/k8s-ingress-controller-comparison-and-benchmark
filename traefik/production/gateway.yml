@@ -7,23 +7,24 @@ spec:
   gatewayClassName: traefik
 
   listeners:
-    - name: http
+      # This name must mach the entrypoint configured in the helm chart values!
+    - name: web
       protocol: HTTP
       # This port must mach the entrypoint configured in the helm chart values!
       port: 8000
       allowedRoutes:
         namespaces:
           from: All 
-
-            #- name: https
-            #  protocol: HTTPS
-            #  port: 443
-            #  tls:
-            #    mode: Terminate
-            #    certificateRefs:
-            #      - name: secret-tls
-            #        namespace: default
-
-            #  allowedRoutes:
-            #    namespaces:
-            #      from: Same
+      # This name must mach the entrypoint configured in the helm chart values!
+    - name: websecure
+      protocol: HTTPS
+      # This port must mach the entrypoint configured in the helm chart values!
+      port: 8443
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: my-tls-secret
+            namespace: default
+      allowedRoutes:
+        namespaces:
+          from: All 
