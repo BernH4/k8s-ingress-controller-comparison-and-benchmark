@@ -2,12 +2,12 @@
 shell: bash
 ---
 
-# Traefik: Encrypted communicaton between Clients <-> Gateway
+# Envoy: Encrypted communicaton between Clients <-> Gateway
 
-- Make sure Cluster is running and set up according to production section in 1-traefik-setup.md
+- Make sure Cluster is running and set up according to production section in 1-envoy-gw-setup.md
 - The Gateway and HTTPRoute Ressources are already configured to work with https connections
 
-## Install cert-manager
+## Install cert-manager (exactly same deployment used with other gateways)
 
 - https://cert-manager.io/docs/installation/helm/#installing-from-the-oci-registry
 - https://cert-manager.io/docs/usage/gateway/
@@ -42,12 +42,24 @@ kubectl apply -f ../common_config_files/cert-manager/certificate.yml
 Verify the application is accessible via https (make sure to cancel earlier port-forward):
 
 ```sh
-kubectl port-forward -n traefik service/traefik 8443:443
+export ENVOY_SERVICE=$(kubectl get svc -n envoy-gateway-system --selector=gateway.envoyproxy.io/owning-gateway-namespace=default,gateway.envoyproxy.io/owning-gateway-name=gateway -o jsonpath='{.items[0].metadata.name}')
+
+kubectl -n envoy-gateway-system port-forward service/${ENVOY_SERVICE} 8443:443
+
 ```
 
 Because we are using a local CA, browsers and tools will treat the certificate as insecure. Fix this by exporting the Root CA and importing it to the Operating System or tell curl to trust it using the `--cacert` flag:
 
 ```sh
 kubectl get secret root-secret -n cert-manager -o jsonpath='{.data.tls\.crt}' | base64 -d > ca.crt
-curl --cacert ca.crt https://web-app.localhost:8443"
+curl --cacert ca.crt https://web-app.localhost:8443
+```
+
+Optionally, you can extract the Root CA certificate from the cluster and add it to your local trust store to avoid self-signed certificate warnings:
+
+```sh
+# Extract root cert to 'ca.crt'
+kubectl get secret root-secret -n cert-manager -o jsonpath='{.data.tls\.crt}' | base64 -d > ca.crt
+
+# Now import it in your OS or Browser
 ```

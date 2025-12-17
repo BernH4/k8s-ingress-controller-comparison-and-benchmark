@@ -2,12 +2,12 @@
 shell: bash
 ---
 
-# Traefik
+# Envoy
 
 ## 1. Create Kubernetes Cluster
 
 ```sh
-kind create cluster --config kind-config-3-worker-nodes.yml --name cluster-envoy-gw
+kind create cluster --config ../kind-config-3-worker-nodes.yml --name cluster-envoy-gw
 ```
 
 ## Quickstart
@@ -65,9 +65,9 @@ kubectl delete -f https://github.com/envoyproxy/gateway/releases/download/v1.6.1
 Deploy the Envoy specific GatewayClass and Gateway
 
 ```sh
-kubectl apply -f envoy-gw/gatewayclass.yml
-kubectl apply -f envoy-gw/gateway.yml
-kubectl apply -f envoy-gw/envoyproxy.yml
+kubectl apply -f gatewayclass.yml
+kubectl apply -f gateway.yml
+kubectl apply -f envoyproxy.yml
 ```
 
 As Envoy GW was configured to be HA (High Available), two data planes and one control plane should be running:
@@ -79,8 +79,8 @@ kubectl get pods -n envoy-gateway-system
 Deploy a custom web-app, httproute, and gateway that will be reused by all gateways.
 
 ```sh
-kubectl apply -f common_config_files/web-app-1.yml
-kubectl apply -f common_config_files/httproute.yml
+kubectl apply -f ../common_config_files/web-app-1.yml
+kubectl apply -f ../common_config_files/httproute.yml
 ```
 
 All deployed ressources should now be working fine (altough the gateway will return Programmed: False as there is no cloud provider assigning it an address):
