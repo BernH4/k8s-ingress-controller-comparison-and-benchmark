@@ -40,7 +40,7 @@ helm repo update
 Install Kong using the provided quickstart values:
 
 ```sh
-helm install kong kong/ingress -n kong --create-namespace
+helm install kong kong/ingress --version "0.21.0" -n kong --create-namespace
 ```
 
 ### Deploy Sample Application
