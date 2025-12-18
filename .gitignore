@@ -1,2 +1,4 @@
 ca.crt
+tls.key
+tls.crt
 .env
