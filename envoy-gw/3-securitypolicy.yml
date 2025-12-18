@@ -5,8 +5,8 @@ metadata:
 spec:
   targetRefs:
     - group: gateway.networking.k8s.io
-      kind: HTTPRoute
-      name: myapp
+      kind: Gateway
+      name: gateway
   oidc:
   # TODO: Change variables to reflect them from your OIDC Provider
     provider:
@@ -14,5 +14,5 @@ spec:
     clientID: "047094fd-3b17-4085-84fb-504deb4153de" 
     clientSecret:
       name: "my-app-client-secret"
-    redirectURL: "https://www.example.com/myapp/oauth2/callback"
-    logoutPath: "/myapp/logout"
+    redirectURL: "https://www.example.com/oauth2/callback"
+    logoutPath: "/logout"

@@ -10,7 +10,10 @@ spec:
     - name: gateway
       sectionName: websecure
   hostnames:
+  # Used for testing with local cluster
     - "web-app.localhost"
+  # Used for testing with Azure Cluster
+    - "www.example.com"
   rules:
     - matches:
         - path:

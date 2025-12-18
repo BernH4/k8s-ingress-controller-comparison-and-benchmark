@@ -9,6 +9,7 @@ During setup note CLIENT_SECRET and provide it below or in a `.env` file in the 
 
 ```sh
 export $(cat ../.env | xargs)
+# Or provide directly:
 # export CLIENT_SECRET=fill_me
 ```
 
@@ -16,48 +17,36 @@ Web App Demo Application should be set up and reachable via https on our Azure C
 
 ```sh
 export GATEWAY_HOST=$(kubectl get gateway gateway -o jsonpath='{.status.addresses[0].value}')
-curl -k -H "Host: web-app.localhost" https://$GATEWAY_HOST
+curl -k -H "Host: www.example.com" https://$GATEWAY_HOST
 ```
 
 ## Setup OIDC according to Envoy Gateway Docs
 
 https://gateway.envoyproxy.io/docs/tasks/security/oidc/#oidc-authentication-for-a-httproute
 
+Store the CLIENT_SECRET from OIDC Provider as a Kubernetes secret:
+
 ```sh
 kubectl create secret generic my-app-client-secret --from-literal=client-secret=${CLIENT_SECRET}
 ```
 
-Apply the routes provided in the documentation, the backendRef has been changed to use our web app.
-
-```sh
-cat <<EOF | kubectl apply -f -
-apiVersion: gateway.networking.k8s.io/v1
-kind: HTTPRoute
-metadata:
-  name: myapp
-spec:
-  parentRefs:
-  - name: gateway #Changed to our gateway
-  hostnames: ["www.example.com"]
-  rules:
-  - matches:
-    - path:
-        type: PathPrefix
-        value: /myapp
-    filters:
-    - type: URLRewrite
-      urlRewrite:
-        path:
-          type: ReplacePrefixMatch
-          replacePrefixMatch: /   # <--- This replaces '/myapp' with '/'
-    backendRefs: # changed to our web app
-    - name: web-app-1
-      port: 80
-EOF
-```
-
-kubernetes apply -f 3-securitypolicy.yml
+Apply SecurityPolicy which configures to attach OIDC Auth to all routes the gateway manages.
+It is configured to use Azure as OIDC Provider.
 
 ```sh
 kubectl apply -f 3-securitypolicy.yml
 ```
+
+The Cluster does not have a Domain. Get the Public IP of the Cluster and change your /etc/hosts file so that www.example.com points to this ip
+
+```sh
+export GATEWAY_HOST=$(kubectl get gateway gateway -o jsonpath='{.status.addresses[0].value}')
+
+echo "Add the following to /etc/hosts:"
+echo "$GATEWAY_HOST www.example.com"
+
+```
+
+## Test Changes
+
+If you now visit www.example.com (www is important!) you will be redirected to Azure to sign in with your account. After logging in you will be redirected to the Demo Web App.
