@@ -1,0 +1,18 @@
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: oidc-example
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: myapp
+  oidc:
+  # TODO: Change variables to reflect them from your OIDC Provider
+    provider:
+      issuer: "https://login.microsoftonline.com/8a12626e-40bc-44f1-8955-e4782cebfbc1/v2.0"
+    clientID: "047094fd-3b17-4085-84fb-504deb4153de" 
+    clientSecret:
+      name: "my-app-client-secret"
+    redirectURL: "https://www.example.com/myapp/oauth2/callback"
+    logoutPath: "/myapp/logout"

@@ -12,6 +12,7 @@ spec:
   secretName: my-tls-secret
   dnsNames:
     - web-app.localhost
+    - example.com
   issuerRef:
     name: my-ca-issuer
     kind: ClusterIssuer
