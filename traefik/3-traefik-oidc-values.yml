@@ -1,0 +1,55 @@
+# Same values as in values.yml that were installed during prod setup but
+# does now include OIDC configuration
+ingressRoute:
+  dashboard:
+    enabled: true
+    matchRule: Host(`dashboard.localhost`)
+
+# Enable Gateway API support
+providers:
+  kubernetesGateway:
+    enabled: true
+# Disable automatic creation of GatewayClass and Gateway
+gatewayClass:
+  enabled: false
+gateway:
+  enabled: false
+
+# Access logs are disabled by default
+logs:
+  access:
+    enabled: true
+
+# Configure High Availablity
+deployment:
+  replicas: 2
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1
+# Schedule traefik instances on different nodes
+topologySpreadConstraints:
+  - labelSelector:
+      matchLabels:
+        app.kubernetes.io/name: traefik 
+    maxSkew: 1
+    topologyKey: kubernetes.io/hostname
+    whenUnsatisfiable: DoNotSchedule
+
+
+#----------------------------#
+#-----OIDC-CONFIGURATION-----#
+#----------------------------#
+
+# Install third party OIDC Plugin
+experimental:
+  plugins:
+    traefik-oidc-auth:
+      moduleName: "github.com/sevensolutions/traefik-oidc-auth"
+      version: "v0.17.0"
+
+# 2. Protect all endpoints behind https entrypoint
+ports:
+  websecure:
+    middlewares:
+      # Format: <namespace>-<middleware-name>@kubernetescrd
+      - default-global-oidc@kubernetescrd
