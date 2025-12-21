@@ -109,14 +109,6 @@ helm upgrade kong kong/ingress --version "0.21.0" -n kong --values ./3-helm-valu
 
 ```
 
-Set `$PROXY_IP` as an environment variable for future commands:
-
-```sh
-export PROXY_IP=$(kubectl get svc --namespace kong kong-gateway-proxy -o jsonpath='{range .status.loadBalancer.ingress[0]}{@.ip}{@.hostname}{end}')
-echo $PROXY_IP
-
-```
-
 Apply KongPlugin openid-connect which configures to attach OIDC Auth to all routes the gateway manages.
 It is configured to use Azure as OIDC Provider.
 
