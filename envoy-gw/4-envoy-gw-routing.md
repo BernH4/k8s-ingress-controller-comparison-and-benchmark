@@ -5,7 +5,8 @@ shell: bash
 # Envoy: Routing
 
 Path- and Host based routing will be tested.
-Prerequisites:
+
+**Prerequisites:**
 
 - Envoy Gateway installed and setup as described in `1-envoy-gw-setup.md` and `2-envoy-gw-https.md` with a local cluster.
 

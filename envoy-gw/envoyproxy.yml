@@ -20,3 +20,14 @@ spec:
               maxSkew: 1
               topologyKey: kubernetes.io/hostname
               whenUnsatisfiable: DoNotSchedule
+  # Tracing Configuration, will be used in 5-envoy-gw-observability.md
+  telemetry:
+    tracing:
+      # sample 100% of requests
+      samplingRate: 100
+      provider:
+        backendRefs:
+        - name: otel-collector
+          namespace: monitoring
+          port: 4317
+        type: OpenTelemetry

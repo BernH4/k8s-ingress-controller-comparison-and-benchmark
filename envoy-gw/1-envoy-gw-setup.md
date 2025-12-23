@@ -100,6 +100,8 @@ kubectl -n envoy-gateway-system port-forward service/${ENVOY_SERVICE} 8000:80
 
 ```
 
+Web App should be reachable. If the response is empty, wait for a few minutes until the setup is completely initialized.
+
 ```sh
 curl http://web-app.localhost:8000
 ```

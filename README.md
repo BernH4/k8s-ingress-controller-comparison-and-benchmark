@@ -8,6 +8,7 @@
 - Kubernetes Version 1.34.0 (automatically configured in kind-config-3-worker-nodes.yml)
 - Helm https://helm.sh/docs/intro/install (Version used: 4.0.1)
 - openssl (Version used 3.0.2)
+- jq (Optional, Version used 1.6)
 
 *Optional:* The VS Code Extension [RunMe](https://marketplace.visualstudio.com/items?itemName=stateful.runme) is recommended to easily execute provided bash commands directly from the markdown document.
 
