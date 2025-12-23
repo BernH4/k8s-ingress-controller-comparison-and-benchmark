@@ -7,9 +7,11 @@ shell: bash
 A Observability Stack will be deployed according to Envoy Gateway documentation.
 
 **Prerequisites:**
-- Envoy Gateway installed and setup as described in `1-envoy-gw-setup.md`. 
+
+- Envoy Gateway installed and setup as described in `1-envoy-gw-setup.md`.
 
 **Documentation used:**
+
 - Enable [Gateway API Metrics](https://gateway.envoyproxy.io/docs/tasks/observability/gateway-api-metrics/)
 
 Both the control and the data plane expose metrics by default on Port 19001, for better usability a Observability stack can be installed.
@@ -41,13 +43,12 @@ Username: admin
 
 Password: admin
 
-
-## Envoy Gateway Metrics 
+## Envoy Gateway Metrics
 
 The Control Plane and Data Plane provides scrapable metrics by default.
 Those metrics can be viewed in the Grafana Dashboard "Envoy Gateway Global" for Control Plane and "Envoy Clusters" and "Envoy Global" for Data Plane.
 
-## Gateway API related Metrics 
+## Gateway API related Metrics
 
 Metrics regarding Gateway API can be activated too.
 
@@ -89,7 +90,7 @@ kubectl port-forward -n monitoring svc/loki 3100:3100
 ```
 
 ```sh
-curl -s "http://localhost:3100/loki/api/v1/query_range" --data-urlencoVde "query={job=\"fluentbit\"}" | jq '.data.result[0].values'
+curl -s "http://localhost:3100/loki/api/v1/query_range" --data-urlencode "query={job=\"fluentbit\"}" | jq '.data.result[0].values'
 ```
 
 ## Traces
@@ -104,6 +105,7 @@ kubectl port-forward service/tempo -n monitoring 3100:3100
 ```
 
 ```sh
+# TODO MAybe this returns nothing as some labels were removed in EnvoyProxy Config
 curl -s "http://localhost:3100/api/search?tags=component%3Dproxy+provider%3Dotel" | jq .traces
 ```
 

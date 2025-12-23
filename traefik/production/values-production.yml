@@ -14,11 +14,6 @@ gatewayClass:
 gateway:
   enabled: false
 
-# Access logs are disabled by default
-logs:
-  access:
-    enabled: true
-
 # Configure High Availablity
 deployment:
   replicas: 2
@@ -33,3 +28,15 @@ topologySpreadConstraints:
     maxSkew: 1
     topologyKey: kubernetes.io/hostname
     whenUnsatisfiable: DoNotSchedule
+
+
+# Access logs and tracing is disabled by default
+logs:
+  access:
+    enabled: true
+tracing:
+  otlp:
+    enabled: true
+    http:
+      enabled: true
+      endpoint: http://tempo.monitoring.svc.cluster.local:4318/v1/traces

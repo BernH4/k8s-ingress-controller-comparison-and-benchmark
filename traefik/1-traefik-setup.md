@@ -136,7 +136,7 @@ kubectl get -n default gatewayclass,gateway,httproute,deploy,svc,pods
 
 ### Test Application
 
-Verify the application is accessible (make sure to cancel earlier port-forward):
+Verify the application is accessible
 
 ```sh
 kubectl port-forward -n traefik service/traefik 8000:80
