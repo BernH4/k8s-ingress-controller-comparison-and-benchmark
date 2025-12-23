@@ -7,7 +7,7 @@ metadata:
 data:
   index.html: |
     <html>
-    <h2>Hello world 2!!</h2>
+    <h2>Hello from Web App 2!!</h2>
     </html>
 ---
 apiVersion: apps/v1

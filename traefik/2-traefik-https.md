@@ -49,5 +49,5 @@ Because we are using a local CA, browsers and tools will treat the certificate a
 
 ```sh
 kubectl get secret root-secret -n cert-manager -o jsonpath='{.data.tls\.crt}' | base64 -d > ca.crt
-curl --cacert ca.crt https://web-app.localhost:8443"
+curl --cacert ca.crt "https://web-app.localhost:8443"
 ```

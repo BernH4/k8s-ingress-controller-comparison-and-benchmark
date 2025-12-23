@@ -1,0 +1,42 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: web-app-route-by-host1
+  namespace: default
+spec:
+  parentRefs:
+    - name: gateway
+      sectionName: web
+    - name: gateway
+      sectionName: websecure
+  hostnames:
+  # Used for testing with local cluster
+    - "a.web-app.localhost"
+  # Used for testing with Azure Cluster
+    - "www.a.example.com"
+  rules:
+    - backendRefs:
+      - name: web-app-1
+        port: 80
+
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: web-app-route-by-host2
+  namespace: default
+spec:
+  parentRefs:
+    - name: gateway
+      sectionName: web
+    - name: gateway
+      sectionName: websecure
+  hostnames:
+  # Used for testing with local cluster
+    - "b.web-app.localhost"
+  # Used for testing with Azure Cluster
+    - "www.b.example.com"
+  rules:
+    - backendRefs:
+      - name: web-app-2
+        port: 80

@@ -10,9 +10,14 @@ metadata:
   namespace: default # MUST BE IN SAME NAMESPACE AS GATEWAY
 spec:
   secretName: my-tls-secret
+  # Entries beginning with a or b will later be used for testing host based routing
   dnsNames:
     - web-app.localhost
+    - a.web-app.localhost
+    - b.web-app.localhost
     - www.example.com
+    - www.a.example.com
+    - www.b.example.com
   issuerRef:
     name: my-ca-issuer
     kind: ClusterIssuer
