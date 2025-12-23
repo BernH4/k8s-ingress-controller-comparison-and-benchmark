@@ -65,7 +65,7 @@ Recreate the cluster to continue testing a more production like deployment
 
 ```sh
 kind delete cluster -n cluster-traefik
-kind create cluster --config kind-config-3-worker-nodes.yml --name cluster-traefik
+kind create cluster --config ../kind-config-3-worker-nodes.yml --name cluster-traefik
 ```
 
 ## Production deployment

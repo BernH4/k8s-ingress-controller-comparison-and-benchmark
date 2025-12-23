@@ -9,6 +9,8 @@
 - Helm https://helm.sh/docs/intro/install (Version used: 4.0.1)
 - openssl (Version used 3.0.2)
 
+*Optional:* The VS Code Extension [RunMe](https://marketplace.visualstudio.com/items?itemName=stateful.runme) is recommended to easily execute provided bash commands directly from the markdown document.
+
 ## Deployment & Production Configuration
 
 All gateways were initially deployed using the standard Quickstart Guide. Afterwards, a more production-grade configuration was uniformly applied to all three gateways, incorporating the following features:
