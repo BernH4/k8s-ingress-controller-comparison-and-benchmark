@@ -48,6 +48,8 @@ kubectl port-forward -n kong service/kong-gateway-proxy 8443:443
 
 Because we are using a local CA, browsers and tools will treat the certificate as insecure. Fix this by exporting the Root CA and importing it to the Operating System or tell curl to trust it using the `--cacert` flag:
 
+NOTE: It takes about 3 minutes for the certificate to be picked up and used by kong.
+
 ```sh
 kubectl get secret root-secret -n cert-manager -o jsonpath='{.data.tls\.crt}' | base64 -d > ca.crt
 curl --cacert ca.crt https://web-app.localhost:8443
