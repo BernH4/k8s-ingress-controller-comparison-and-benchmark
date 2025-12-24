@@ -11,6 +11,14 @@ gateway:
       maxSkew: 1
       topologyKey: kubernetes.io/hostname
       whenUnsatisfiable: DoNotSchedule
+  # For metrics
+  serviceMonitor:
+    enabled: true
+    labels:
+      release: promstack
+  env:
+    tracing_instrumentations: all
+    tracing_sampling_rate: 1.0
 
 # Now documentation found on how to configure access logs, altough some basic logging is configured 
 # by default

@@ -1,0 +1,13 @@
+apiVersion: configuration.konghq.com/v1
+kind: KongClusterPlugin
+metadata:
+  name: opentelemetry
+  namespace: kong
+  annotations:
+    kubernetes.io/ingress.class: kong
+    konghq.com/tags: ''
+  labels:
+    global: 'true'
+config:
+  traces_endpoint: http://tempo.monitoring.svc.cluster.local:4318/v1/traces
+plugin: opentelemetry
