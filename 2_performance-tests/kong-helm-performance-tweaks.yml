@@ -1,0 +1,12 @@
+# HELM VALUES
+# Tweak performance according to: https://developer.konghq.com/gateway/performance/optimize/
+gateway:
+  env:
+
+    nginx_worker_processes: "6"
+    #proxy_access_log: "off" # Keep access log on, same as with other Gateways
+
+  resources:
+    requests:
+      cpu: 6
+      memory: "8Gi"

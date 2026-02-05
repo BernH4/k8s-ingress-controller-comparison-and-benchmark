@@ -1,0 +1,15 @@
+# values.yaml
+# Enable Gateway API support
+providers:
+  kubernetesGateway:
+    enabled: true
+# Disable automatic creation of GatewayClass and Gateway
+gatewayClass:
+  enabled: false
+gateway:
+  enabled: false
+
+# Accesslogs are enabled, metrics and traces disabled for all Gateways for fair comparison
+logs:
+  access:
+    enabled: true
