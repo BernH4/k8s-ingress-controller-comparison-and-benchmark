@@ -2,7 +2,7 @@
 shell: bash
 ---
 
-# Envoy
+# Envoy Gateway
 
 ## 1. Create Kubernetes Cluster
 
@@ -62,7 +62,7 @@ kubectl delete -f https://github.com/envoyproxy/gateway/releases/download/v1.6.1
 
 ### Deployment
 
-Deploy the Envoy specific GatewayClass and Gateway
+Deploy the Envoy specific GatewayClass and Gateway and apply Proxy configuration.
 
 ```sh
 kubectl apply -f gatewayclass.yml
@@ -76,7 +76,7 @@ As Envoy GW was configured to be HA (High Available), two data planes and one co
 kubectl get pods -n envoy-gateway-system
 ```
 
-Deploy a custom web-app, httproute, and gateway that will be reused by all gateways.
+Deploy a custom web-app and httproute that will be reused by all gateways.
 
 ```sh
 kubectl apply -f ../common_config_files/web-app-1.yml

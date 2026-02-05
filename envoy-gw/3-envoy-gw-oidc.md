@@ -1,8 +1,8 @@
 # Envoy: Authorization via OIDC (OpenID-Connect)
 
 For a more production like setup a Azure Kubernetes Cluster was created and Azure EntraID is used as OIDC Provider.
-Prerequisites:
 
+**Prerequisites:**
 - AKS Cluster with default configuration, Envoy Gateway installed and setup as described in `1-envoy-gw-setup.md` and `2-envoy-gw-https.md`
 - OIDC setup in [Azure](https://learn.microsoft.com/en-us/entra/identity-platform/v2-protocols-oidc)
 
