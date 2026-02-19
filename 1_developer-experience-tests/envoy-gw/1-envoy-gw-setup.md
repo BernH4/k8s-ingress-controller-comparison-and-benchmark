@@ -7,7 +7,7 @@ shell: bash
 ## 1. Create Kubernetes Cluster
 
 ```sh
-kind create cluster --config ../kind-config-3-worker-nodes.yml --name cluster-envoy-gw
+kind create cluster --config ../../kind-config-3-worker-nodes.yml --name cluster-envoy-gw
 ```
 
 ## Quickstart
@@ -46,7 +46,7 @@ export ENVOY_SERVICE=$(kubectl get svc -n envoy-gateway-system --selector=gatewa
 kubectl -n envoy-gateway-system port-forward service/${ENVOY_SERVICE} 8888:80
 ```
 
-Curl the example app through Envoy proxy:
+Curl the example app through Envoy proxy to check if install is working:
 
 ```markdown {"terminalRows":"20"}
 curl --header "Host: www.example.com" http://localhost:8888/get
@@ -62,7 +62,7 @@ kubectl delete -f https://github.com/envoyproxy/gateway/releases/download/v1.6.1
 
 ### Deployment
 
-Deploy the Envoy specific GatewayClass and Gateway and apply Proxy configuration.
+Deploy the Envoy specific GatewayClass and Gateway and apply Envoy Data Plane (Proxy) configuration that includes more production like settings.
 
 ```sh
 kubectl apply -f gatewayclass.yml
@@ -79,8 +79,8 @@ kubectl get pods -n envoy-gateway-system
 Deploy a custom web-app and httproute that will be reused by all gateways.
 
 ```sh
-kubectl apply -f ../common_config_files/web-app-1.yml
-kubectl apply -f ../common_config_files/httproute.yml
+kubectl apply -f ../../common_config_files/web-app-1.yml
+kubectl apply -f ../../common_config_files/httproute.yml
 ```
 
 All deployed ressources should now be working fine (altough the gateway will return Programmed: False as there is no cloud provider assigning it an address):
@@ -109,6 +109,8 @@ curl http://web-app.localhost:8000
 **Application URL:** http://web-app.localhost:8000
 
 ### Delete Cluster
+
+Skip this if you want to continue with `2-envoy-gw-https.md` or other tests.
 
 ```sh
 kind delete cluster -n cluster-envoy-gw

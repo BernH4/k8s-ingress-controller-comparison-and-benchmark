@@ -105,8 +105,7 @@ kubectl port-forward service/tempo -n monitoring 3100:3100
 ```
 
 ```sh
-# TODO MAybe this returns nothing as some labels were removed in EnvoyProxy Config
-curl -s "http://localhost:3100/api/search?tags=component%3Dproxy+provider%3Dotel" | jq .traces
+curl -s "http://localhost:3100/api/search?limit=5" | jq .traces
 ```
 
 Insert any TraceID gotten from previous command:

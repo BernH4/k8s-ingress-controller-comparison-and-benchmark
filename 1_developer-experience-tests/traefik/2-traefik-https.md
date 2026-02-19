@@ -27,14 +27,14 @@ helm install \
 Create own internal Certificate Authority that will sign our applicaton certificates:
 
 ```sh
-kubectl apply -f ../common_config_files/cert-manager/ca-config.yml
+kubectl apply -f ../../common_config_files/cert-manager/ca-config.yml
 ```
 
 Advise cert-manager to create and sign a certificate for our application:
 
 ```sh
 
-kubectl apply -f ../common_config_files/cert-manager/certificate.yml
+kubectl apply -f ../../common_config_files/cert-manager/certificate.yml
 ```
 
 ### Test Application

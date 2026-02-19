@@ -15,7 +15,7 @@ Prerequisites:
 During setup note CLIENT_SECRET and provide it below or in a `.env` file in the root directory.
 
 ```sh
-export $(cat ../.env | xargs)
+export $(cat ../../.env | xargs)
 # Or provide directly:
 # export CLIENT_SECRET=fill_me
 ```

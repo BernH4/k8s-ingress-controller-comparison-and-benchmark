@@ -9,6 +9,7 @@ shell: bash
 - Traefik installed and setup as described in `1-traefik-setup.md`.
 
 Documentation:
+
 - https://doc.traefik.io/traefik/observe/metrics/
 - https://doc.traefik.io/traefik/observe/logs-and-access-logs/
 - https://doc.traefik.io/traefik/observe/tracing/

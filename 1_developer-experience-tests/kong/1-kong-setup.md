@@ -7,7 +7,7 @@ shell: bash
 ## 1. Create Kubernetes Cluster
 
 ```sh
-kind create cluster --config ../kind-config-3-worker-nodes.yml --name cluster-kong
+kind create cluster --config ../../kind-config-3-worker-nodes.yml --name cluster-kong
 ```
 
 ## Quickstart
@@ -106,8 +106,8 @@ Additionally use the production gateway config that reuses values similar to tra
 
 ```sh
 kubectl apply -f production/gateway.yml
-kubectl apply -f ../common_config_files/web-app-1.yml
-kubectl apply -f ../common_config_files/httproute.yml
+kubectl apply -f ../../common_config_files/web-app-1.yml
+kubectl apply -f ../../common_config_files/httproute.yml
 ```
 
 ### Test Application

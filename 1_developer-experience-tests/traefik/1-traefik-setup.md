@@ -7,7 +7,7 @@ shell: bash
 ## 1. Create Kubernetes Cluster
 
 ```sh
-kind create cluster --config ../kind-config-3-worker-nodes.yml --name cluster-traefik
+kind create cluster --config ../../kind-config-3-worker-nodes.yml --name cluster-traefik
 ```
 
 ## Quickstart
@@ -44,9 +44,9 @@ kubectl port-forward svc/traefik 8000:80
 Deploy the provided whoami application and expose it via Gateway API:
 
 ```sh
-kubectl apply -f traefik/quickstart/whoami-service.yaml
-kubectl apply -f traefik/quickstart/whoami.yaml
-kubectl apply -f traefik/quickstart/httproute.yaml
+kubectl apply -f quickstart/whoami-service.yaml
+kubectl apply -f quickstart/whoami.yaml
+kubectl apply -f quickstart/httproute.yaml
 ```
 
 ### Test Application
@@ -65,7 +65,7 @@ Recreate the cluster to continue testing a more production like deployment
 
 ```sh
 kind delete cluster -n cluster-traefik
-kind create cluster --config ../kind-config-3-worker-nodes.yml --name cluster-traefik
+kind create cluster --config ../../kind-config-3-worker-nodes.yml --name cluster-traefik
 ```
 
 ## Production deployment
@@ -124,8 +124,8 @@ kubectl apply -f production/gatewayclass.yml
 Deploy a custom web-app and httproute that will be reused by all gateways.
 
 ```sh
-kubectl apply -f ../common_config_files/web-app-1.yml
-kubectl apply -f ../common_config_files/httproute.yml
+kubectl apply -f ../../common_config_files/web-app-1.yml
+kubectl apply -f ../../common_config_files/httproute.yml
 ```
 
 All deployed ressources should now be working fine:
@@ -149,6 +149,8 @@ curl http://web-app.localhost:8000
 **Application URL:** http://web-app.localhost:8000
 
 ### Delete Cluster
+
+Skip this if you want to continue with `2-traefik-https.md` or other tests.
 
 ```sh
 kind delete cluster -n cluster-traefik

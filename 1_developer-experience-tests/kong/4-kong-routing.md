@@ -2,19 +2,18 @@
 shell: bash
 ---
 
-# Envoy: Routing
+# Kong: Routing
 
 Path- and Host based routing will be tested.
+Prerequisites:
 
-**Prerequisites:**
-
-- Envoy Gateway installed and setup as described in `1-envoy-gw-setup.md` and `2-envoy-gw-https.md` with a local cluster.
+- Kong installed and setup as described in `1-kong-setup.md` and `2-kong-https.md` with a local cluster.
 
 Deploy two Web Apps to test Routing. Corresponding Service is also included in the file.
 
 ```sh
-kubectl apply -f ../common_config_files/web-app-1.yml
-kubectl apply -f ../common_config_files/web-app-2.yml
+kubectl apply -f ../../common_config_files/web-app-1.yml
+kubectl apply -f ../../common_config_files/web-app-2.yml
 ```
 
 Both Web Apps should now be running:
@@ -29,7 +28,7 @@ kubectl get pods
 Apply the defined HTTPRoute that defined path based routes:
 
 ```sh
-kubectl apply -f ../common_config_files/routing-by-path.yml
+kubectl apply -f ../../common_config_files/routing-by-path.yml
 ```
 
 ### Test Routing
@@ -37,9 +36,7 @@ kubectl apply -f ../common_config_files/routing-by-path.yml
 Verify the applications are now accessible on via their configured path (make sure to cancel earlier port-forward):
 
 ```sh
-export ENVOY_SERVICE=$(kubectl get svc -n envoy-gateway-system --selector=gateway.envoyproxy.io/owning-gateway-namespace=default,gateway.envoyproxy.io/owning-gateway-name=gateway -o jsonpath='{.items[0].metadata.name}')
-
-kubectl -n envoy-gateway-system port-forward service/${ENVOY_SERVICE} 8000:80 8443:443
+kubectl port-forward -n kong service/kong-gateway-proxy 8000:80 8443:443
 ```
 
 ```sh
@@ -64,7 +61,7 @@ curl --cacert ca.crt https://web-app.localhost:8443/app2
 Apply the defined HTTPRoutes that defined host based routes:
 
 ```sh
-kubectl apply -f ../common_config_files/routing-by-host.yml
+kubectl apply -f ../../common_config_files/routing-by-host.yml
 ```
 
 ```sh

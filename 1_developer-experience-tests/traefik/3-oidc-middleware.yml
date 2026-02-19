@@ -13,10 +13,4 @@ spec:
             CallbackUri: "https://www.example.com/oauth2/callback"
             Scopes:
                 - openid
-            #    - profile
-            #    - email
             Secret: "urn:k8s:secret:traefik-oidc-encryption-secret:cookie-secret"
-
-
-
-# include this other secret?

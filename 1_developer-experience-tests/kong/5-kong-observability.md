@@ -4,8 +4,6 @@ shell: bash
 
 # Kong: Exportable Observability (Logging, Metrics, Tracing)
 
-
-
 Following the kong documentation example, this will deploy a servicemonitor Kubernetes resource using the Kong Gateway Helm chart, then use a KongClusterPlugin to configure the prometheus plugin for all Services in the cluster.
 
 **Prerequisites:**
@@ -64,8 +62,6 @@ done
 ```
 
 Get access to Grafana locally:
-# TODO: For some reason sometimes helm upgrade has to be executed twice in order for the servicemonitor to be created
-# Check if theres on with name "kong-gateway" available using `kubectl get servicemonitor -A`
 
 ```sh
 echo "Password for Grafana will be:"
@@ -117,8 +113,4 @@ Insert any TraceID gotten from previous command:
 
 ```sh
 curl -s "http://localhost:3200/api/traces/<TRACEID>" | jq
-```
-
-```sh
-
 ```

@@ -12,8 +12,8 @@ Prerequisites:
 Deploy two Web Apps to test Routing. Corresponding Service is also included in the file.
 
 ```sh
-kubectl apply -f ../common_config_files/web-app-1.yml
-kubectl apply -f ../common_config_files/web-app-2.yml
+kubectl apply -f ../../common_config_files/web-app-1.yml
+kubectl apply -f ../../common_config_files/web-app-2.yml
 ```
 
 Both Web Apps should now be running:
@@ -28,7 +28,7 @@ kubectl get pods
 Apply the defined HTTPRoute that defined path based routes:
 
 ```sh
-kubectl apply -f ../common_config_files/routing-by-path.yml
+kubectl apply -f ../../common_config_files/routing-by-path.yml
 ```
 
 ### Test Routing
@@ -61,7 +61,7 @@ curl --cacert ca.crt https://web-app.localhost:8443/app2
 Apply the defined HTTPRoutes that defined host based routes:
 
 ```sh
-kubectl apply -f ../common_config_files/routing-by-host.yml
+kubectl apply -f ../../common_config_files/routing-by-host.yml
 ```
 
 ```sh
