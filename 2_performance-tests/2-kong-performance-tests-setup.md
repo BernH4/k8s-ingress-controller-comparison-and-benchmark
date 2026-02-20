@@ -4,21 +4,21 @@ shell: bash
 
 # Kong
 
-## 1. Prerequisites:
+## 1. Prerequisites
 
 - Cluster setup according to `1-cluster-configuration.md`
-- HTTPS setup according to `/kong/2-envoy-gw-https.md`
+- HTTPS setup according to `/1_developer-experience-tests/kong/2-kong-https.md`
 
 ### Install Kong
 
-Deploy Kong with some minor changes compared to DeveloperExperience Tests:
+Deploy Kong with some minor changes compared to the developer experience tests:
 
-- No HighAvailability (Only one instance will be running)
-- AccessLogs enabled
+- No high availability (only one instance will be running)
+- Access logs enabled
 - Metrics disabled
 - Traces disabled
 
-The proxy (data plane) will be running without cpu/memory limits and is only bound by the nodes resources.
+The proxy (data plane) will be running without CPU/memory limits and is only bound by the node's resources.
 
 ### Install Kong Ingress Controller
 
@@ -48,13 +48,13 @@ Install Kong:
 helm install kong kong/ingress --version "0.21.0" -n kong -f kong-helm-performance-tweaks.yml
 ```
 
-Control and Data Plane should now be running:
+Control and data plane should now be running:
 
 ```sh
 kubectl get pods -n kong -o wide
 ```
 
-Configure a HTTPRoute to each web app configured in `1-cluster-configuration.md`
+Configure an HTTPRoute to each web app configured in `1-cluster-configuration.md`:
 
 ```sh {"promptEnv":"never"}
 export BACKEND_APPLICATIONS=10
@@ -102,9 +102,9 @@ done
 
 ### Test Application
 
-Web App Demo Application should be set up and reachable on our Azure Cluster:
+The web app demo application should be set up and reachable on the Azure cluster.
 
-If the response is empty, wait for a few minutes until the setup is completely initialized.
+If the response is empty, wait a few minutes until the setup is completely initialized.
 
 ```sh
 export GATEWAY_HOST=$(kubectl get -n kong gateway/gateway -o jsonpath='{.status.addresses[0].value}')
@@ -112,7 +112,7 @@ echo $GATEWAY_HOST
 curl -H "Host: www.example.com" http://$GATEWAY_HOST/web-app-1
 ```
 
-Also HTTPS connection should work:
+The HTTPS connection should also work:
 
 ```sh
 kubectl get secret root-secret -n cert-manager -o jsonpath='{.data.tls\.crt}' | base64 -d > ca.crt
@@ -121,7 +121,7 @@ curl --cacert ca.crt -H "Host: www.example.com" https://$GATEWAY_HOST/web-app-1
 
 ## Performance Test
 
-To track CPU usage of the Nodes/Pods the following commands can be used:
+To track CPU usage of the nodes/pods, the following commands can be used:
 
 ```sh
 watch k top nodes
@@ -132,18 +132,18 @@ watch k top nodes
 watch kubectl top pods -A --sort-by=memory
 ```
 
-Now execute the k6 load test scripts on the Virtual Machine.
+Now execute the k6 load test scripts on the virtual machine.
 
 ## Reliability Tests
 
 ### Hot Reloading
 
 The following script will update a route to point to a random service every 5 seconds.
-Theoretically a route change should not result in any downtime/5xx responses.
+Theoretically, a route change should not result in any downtime or 5xx responses.
 
-When running the load tests in parallel the test output should have a zero value at http_req_failed.
+When running the load tests in parallel, the test output should have a zero value at http_req_failed.
 
-First, simplify routing to have just one rule, /web-app-1 will point to web-app-1
+First, simplify routing to have just one rule; `/web-app-1` will point to `web-app-1`:
 
 ```sh
 cat <<EOF | kubectl apply -f -
@@ -180,7 +180,7 @@ spec:
 EOF
 ```
 
-This script will now update the single rule to point to a random web-app:
+This script will now update the single rule to point to a random web app:
 
 ```sh
 ROUTE_NAME="performance-test-routes"
@@ -204,16 +204,16 @@ while true; do
 done
 ```
 
-While the script is running, execute the loadtest on the VM with the following parameters, it will send 20k RPS and will just hit the single endpoint configured.
+While the script is running, execute the load test on the VM with the following parameters. It will send 20k RPS and will hit only the single endpoint configured.
 
 `./run_test.sh 20000 1`
 
 ### Rolling Updates
 
-Updating the version of the Gateway should not lead to any downtime/5xx responses.
+Updating the version of the gateway should not lead to any downtime or 5xx responses.
 
-Kong Ingress Controller was installed using Helmchart version 0.21.0, which installed the Kong v3.9.
-Test Rolling Updates by downgrading to Helmchart version to 0.17.0, which will downgrade Kong to v3.8:
+Kong Ingress Controller was installed using Helm chart version 0.21.0, which installed Kong v3.9.
+Test rolling updates by downgrading to Helm chart version 0.17.0, which will downgrade Kong to v3.8:
 
 ```sh
 helm upgrade kong kong/ingress --version "0.17.0" -n kong 

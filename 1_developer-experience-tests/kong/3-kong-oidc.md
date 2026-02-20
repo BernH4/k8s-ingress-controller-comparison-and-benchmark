@@ -1,12 +1,13 @@
-# Envoy: Authorization via OIDC (OpenID-Connect)
+# Kong: Authorization via OIDC (OpenID Connect)
 
-For a more production like setup a Azure Kubernetes Cluster was created and Azure EntraID is used as OIDC Provider.
-Prerequisites:
+For a more production like setup, an Azure Kubernetes cluster was created and Azure EntraID is used as OIDC provider.
 
-- AKS Cluster with default configuration, Envoy Gateway installed and setup as described in 1-kong-setup.md and 2--https.md
+**Prerequisites:**
+
+- AKS cluster with default configuration, Kong installed and set up as described in `1-kong-setup.md` and `2-kong-https.md`
 - OIDC setup in [Azure](https://learn.microsoft.com/en-us/entra/identity-platform/v2-protocols-oidc)
 
-During setup note CLIENT_SECRET and provide it below or in a `.env` file in the root directory.
+During setup, note the CLIENT_SECRET and provide it below or in a `.env` file in the root directory.
 
 ```sh
 export $(cat ../.env | xargs)
@@ -14,7 +15,7 @@ export $(cat ../.env | xargs)
 # export CLIENT_SECRET=fill_me
 ```
 
-Web App Demo Application should be set up and reachable via https on our Azure Cluster:
+The web app demo application should be set up and reachable via HTTPS on the Azure cluster:
 
 ```sh
 export GATEWAY_HOST=$(kubectl get gateway gateway -o jsonpath='{.status.addresses[0].value}')
@@ -25,8 +26,8 @@ curl -k -H "Host: www.example.com" https://$GATEWAY_HOST
 
 https://developer.konghq.com/kubernetes-ingress-controller/oidc/
 
-OIDC is an Enterprise Plugin, an Account has to be made to start 30 Trial.
-Request a [PAT](https://cloud.konghq.com/global/account/tokens) and put it in your .env file
+OIDC is an enterprise plugin, an account has to be created to start a 30-day trial.
+Request a [PAT](https://cloud.konghq.com/global/account/tokens) and put it in your `.env` file.
 
 ```sh
 export $(cat ../.env | xargs)
@@ -34,7 +35,7 @@ export $(cat ../.env | xargs)
 # export KONNECT_TOKEN=fill_me
 ```
 
-Use the Konnect API to create a new CLUSTER_TYPE_K8S_INGRESS_CONTROLLER Control Plane:
+Use the Konnect API to create a new CLUSTER_TYPE_K8S_INGRESS_CONTROLLER control plane:
 
 ```sh
 export CONTROL_PLANE_DETAILS=$(curl -X POST "https://us.api.konghq.com/v2/control-planes" \
@@ -51,7 +52,7 @@ echo $CONTROL_PLANE_ID
 
 ```
 
-Create and use mTLS certificates, they will be used for KIC <-> Konnect communication
+Create and use mTLS certificates, they will be used for KIC-to-Konnect communication:
 
 ```sh
 openssl req -new -x509 -nodes -newkey rsa:2048 -subj "/CN=kongdp/C=US" -keyout ./tls.key -out ./tls.crt
@@ -67,9 +68,9 @@ kubectl create secret tls konnect-client-tls -n kong --cert=./tls.crt --key=./tl
 
 ```
 
-As we now use a managed control plane (konnect) the install has to be adapted to change from self hosted to managed:
+As a managed control plane (Konnect) is now used, the installation has to be adapted to switch from self-hosted to managed:
 
-Note: This will overwrite our High Available configuration done in 1-kong-setup.md but for OIDC demonstrating purposes this is fine.
+Note: This will overwrite the high-availability configuration from `1-kong-setup.md`, but for OIDC demonstration purposes this is acceptable.
 
 ```sh
 cat <<EOF > 3-helm-values-managed-cp.yaml
@@ -109,8 +110,8 @@ helm upgrade kong kong/ingress --version "0.21.0" -n kong --values ./3-helm-valu
 
 ```
 
-Apply KongPlugin openid-connect which configures to attach OIDC Auth to all routes the gateway manages.
-It is configured to use Azure as OIDC Provider.
+Apply the KongPlugin `openid-connect`, which attaches OIDC authentication to all routes the gateway manages.
+It is configured to use Azure as the OIDC provider.
 
 ```sh
 echo "
@@ -139,14 +140,8 @@ plugin: openid-connect
 " | kubectl apply -f -
 ```
 
-Apply KongPlugin openid-connect which configures to attach OIDC Auth to all routes the gateway manages.
-It is configured to use Azure as OIDC Provider.
 
-```sh
-kubectl apply -f 3-kongplugin-oidc.yml
-```
-
-The Cluster does not have a Domain. Get the Public IP of the Cluster and change your /etc/hosts file so that www.example.com points to this ip
+The cluster does not have a domain. Get the public IP of the cluster and update your `/etc/hosts` file so that `www.example.com` points to this IP:
 
 ```sh
 export GATEWAY_HOST=$(kubectl get gateway gateway -o jsonpath='{.status.addresses[0].value}')
@@ -158,4 +153,4 @@ echo "$GATEWAY_HOST www.example.com"
 
 ## Test Changes
 
-If you now visit www.example.com (www is important!) you will be redirected to Azure to sign in with your account. After logging in you will be redirected to the Demo Web App.
+If you now visit `www.example.com` (the `www` prefix is important), you will be redirected to Azure to sign in with your account. After logging in, you will be redirected to the demo web app.

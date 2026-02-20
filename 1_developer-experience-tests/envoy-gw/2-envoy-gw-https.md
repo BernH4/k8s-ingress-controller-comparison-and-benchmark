@@ -2,12 +2,12 @@
 shell: bash
 ---
 
-# Envoy: Encrypted communicaton between Clients <-> Gateway
+# Envoy: Encrypted Communication between Clients and Gateway
 
-- Make sure Cluster is running and set up according to production section in 1-envoy-gw-setup.md
-- The Gateway and HTTPRoute Ressources are already configured to work with https connections
+- Make sure the cluster is running and set up according to the production section in `1-envoy-gw-setup.md`.
+- The Gateway and HTTPRoute resources are already configured to work with HTTPS connections.
 
-## Install cert-manager (exactly same deployment used with other gateways)
+## Install cert-manager (exactly the same deployment used with other gateways)
 
 - https://cert-manager.io/docs/installation/helm/#installing-from-the-oci-registry
 - https://cert-manager.io/docs/usage/gateway/
@@ -24,13 +24,13 @@ helm install \
   --set config.enableGatewayAPI=true
 ```
 
-Create own internal Certificate Authority that will sign our applicaton certificates:
+Create own internal Certificate Authority that will sign the application certificates:
 
 ```sh
 kubectl apply -f ../../common_config_files/cert-manager/ca-config.yml
 ```
 
-Advise cert-manager to create and sign a certificate for our application:
+Instruct cert-manager to create and sign a certificate for the application:
 
 ```sh
 
@@ -39,7 +39,7 @@ kubectl apply -f ../../common_config_files/cert-manager/certificate.yml
 
 ### Test Application
 
-Verify the application is accessible via https (make sure to cancel earlier port-forward):
+Verify the application is accessible via HTTPS (make sure to cancel the earlier port-forward):
 
 ```sh
 export ENVOY_SERVICE=$(kubectl get svc -n envoy-gateway-system --selector=gateway.envoyproxy.io/owning-gateway-namespace=default,gateway.envoyproxy.io/owning-gateway-name=gateway -o jsonpath='{.items[0].metadata.name}')
@@ -48,7 +48,7 @@ kubectl -n envoy-gateway-system port-forward service/${ENVOY_SERVICE} 8443:443
 
 ```
 
-Because we are using a local CA, browsers and tools will treat the certificate as insecure. Fix this by exporting the Root CA and importing it to the Operating System or tell curl to trust it using the `--cacert` flag:
+Because a local CA is used, browsers and tools will treat the certificate as insecure. Fix this by exporting the root CA and importing it into the operating system, or tell curl to trust it using the `--cacert` flag:
 
 ```sh
 kubectl get secret root-secret -n cert-manager -o jsonpath='{.data.tls\.crt}' | base64 -d > ca.crt

@@ -2,10 +2,10 @@
 shell: bash
 ---
 
-# Traefik: Encrypted communicaton between Clients <-> Gateway
+# Traefik: Encrypted Communication between Clients and Gateway
 
-- Make sure Cluster is running and set up according to production section in 1-traefik-setup.md
-- The Gateway and HTTPRoute Ressources are already configured to work with https connections
+- Make sure the cluster is running and set up according to the production section in `1-traefik-setup.md`.
+- The Gateway and HTTPRoute resources are already configured to work with HTTPS connections.
 
 ## Install cert-manager
 
@@ -24,13 +24,13 @@ helm install \
   --set config.enableGatewayAPI=true
 ```
 
-Create own internal Certificate Authority that will sign our applicaton certificates:
+Create own internal Certificate Authority that will sign the application certificates:
 
 ```sh
 kubectl apply -f ../../common_config_files/cert-manager/ca-config.yml
 ```
 
-Advise cert-manager to create and sign a certificate for our application:
+Instruct cert-manager to create and sign a certificate for the application:
 
 ```sh
 
@@ -39,13 +39,13 @@ kubectl apply -f ../../common_config_files/cert-manager/certificate.yml
 
 ### Test Application
 
-Verify the application is accessible via https (make sure to cancel earlier port-forward):
+Verify the application is accessible via HTTPS (make sure to cancel the earlier port-forward):
 
 ```sh
 kubectl port-forward -n traefik service/traefik 8443:443
 ```
 
-Because we are using a local CA, browsers and tools will treat the certificate as insecure. Fix this by exporting the Root CA and importing it to the Operating System or tell curl to trust it using the `--cacert` flag:
+Because a local CA is used, browsers and tools will treat the certificate as insecure. Fix this by exporting the root CA and importing it into the operating system, or tell curl to trust it using the `--cacert` flag:
 
 ```sh
 kubectl get secret root-secret -n cert-manager -o jsonpath='{.data.tls\.crt}' | base64 -d > ca.crt

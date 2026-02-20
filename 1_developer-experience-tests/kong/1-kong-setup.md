@@ -45,7 +45,7 @@ helm install kong kong/ingress --version "0.21.0" -n kong --create-namespace
 
 ### Deploy Sample Application
 
-Deploy the provided echo application and expose it via Gateway API:
+Deploy the provided echo application and expose it via the Gateway API:
 
 ```sh
 kubectl apply -f https://developer.konghq.com/manifests/kic/echo-service.yaml -n kong
@@ -54,7 +54,7 @@ kubectl apply -f quickstart/httproute.yml
 
 ### Test Application
 
-Port forward the Kong service (using port 8000 to avoid root permissions):
+Port-forward the Kong service (using port 8000 to avoid root permissions):
 
 ```sh
 kubectl port-forward -n kong service/kong-gateway-proxy 8000:80
@@ -69,7 +69,7 @@ curl http://localhost:8000/echo
 
 **Application URL:** http://localhost:8000/echo
 
-## Production deployment
+## Production Deployment
 
 Documentation used:
 
@@ -79,19 +79,19 @@ Documentation used:
 - https://github.com/Kong/charts/blob/main/charts/ingress/values.yaml
 - https://github.com/Kong/charts/blob/main/charts/kong/README.md
 
-The initial deployment is expanded to use custom values.yml that configures high availability.
+The initial deployment is expanded to use a custom `values.yml` that configures high availability:
 
 ```sh
 helm upgrade kong kong/ingress --version "0.21.0" -n kong -f production/values.yml
 ```
 
-Now 2 control planes should be running on different nodes:
+Now two control planes should be running on different nodes:
 
 ```sh
 kubectl get pods -n kong -o wide
 ```
 
-The provided Sample Application will be removed. The gateway is changed to be deployed in default namespace, similar to the comomn httproute.yml.
+The provided sample application will be removed. The gateway is changed to be deployed in the default namespace, similar to the common `httproute.yml`:
 
 ```sh
 kubectl delete -f https://developer.konghq.com/manifests/kic/echo-service.yaml -n kong --ignore-not-found=true
@@ -101,8 +101,8 @@ kubectl delete -f quickstart/gateway.yml -n kong --ignore-not-found=true
 
 ### Deployment
 
-Deploy a custom web-app and httproute that will be reused by all gateways.
-Additionally use the production gateway config that reuses values similar to traefik and envoy gatway.
+Deploy a custom web app and HTTPRoute that will be reused by all gateways.
+Additionally, use the production gateway config that reuses values similar to Traefik and Envoy Gateway:
 
 ```sh
 kubectl apply -f production/gateway.yml
@@ -112,7 +112,7 @@ kubectl apply -f ../../common_config_files/httproute.yml
 
 ### Test Application
 
-Verify the application is accessible (make sure to cancel earlier port-forward):
+Verify the application is accessible (make sure to cancel the earlier port-forward):
 
 ```sh
 kubectl port-forward -n kong service/kong-gateway-proxy 8000:80

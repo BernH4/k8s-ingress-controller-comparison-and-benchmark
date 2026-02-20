@@ -4,26 +4,26 @@ shell: bash
 
 # Envoy: Exportable Observability (Logging, Metrics, Tracing)
 
-A Observability Stack will be deployed according to Envoy Gateway documentation.
+An observability stack will be deployed according to the Envoy Gateway documentation.
 
 **Prerequisites:**
 
-- Envoy Gateway installed and setup as described in `1-envoy-gw-setup.md`.
+- Envoy Gateway installed and set up as described in `1-envoy-gw-setup.md`.
 
 **Documentation used:**
 
 - Enable [Gateway API Metrics](https://gateway.envoyproxy.io/docs/tasks/observability/gateway-api-metrics/)
 
-Both the control and the data plane expose metrics by default on Port 19001, for better usability a Observability stack can be installed.
+Both the control plane and the data plane expose metrics by default on port 19001. For better usability, an observability stack can be installed.
 
-Envoy Gateway provides an add-ons Helm chart to simplify the installation of observability components:
+Envoy Gateway provides an add-on Helm chart to simplify the installation of observability components:
 
 ```sh
 helm install eg-addons oci://docker.io/envoyproxy/gateway-addons-helm --version v1.6.1 --set opentelemetry-collector.enabled=true -n monitoring --create-namespace
 
 ```
 
-This helm chart installed Prometheus, Loki, Tempo, Fluent-Bit and Grafana:
+This Helm chart installs Prometheus, Loki, Tempo, Fluent-Bit, and Grafana:
 
 ```sh
 kubectl get pods -n monitoring
@@ -37,7 +37,7 @@ kubectl port-forward service/grafana -n monitoring 3000:$GRAFANA_PORT
 
 ```
 
-Grafana is now be reachable at http://localhost:3000/dashboards in the browser. Dashboards for both Control- and DataPlane are already configured.
+Grafana is now reachable at http://localhost:3000/dashboards in the browser. Dashboards for both control plane and data plane are already configured.
 
 Username: admin
 
@@ -45,12 +45,12 @@ Password: admin
 
 ## Envoy Gateway Metrics
 
-The Control Plane and Data Plane provides scrapable metrics by default.
-Those metrics can be viewed in the Grafana Dashboard "Envoy Gateway Global" for Control Plane and "Envoy Clusters" and "Envoy Global" for Data Plane.
+The control plane and data plane provide scrapable metrics by default.
+Those metrics can be viewed in the Grafana dashboards "Envoy Gateway Global" for the control plane, and "Envoy Clusters" and "Envoy Global" for the data plane.
 
-## Gateway API related Metrics
+## Gateway API-Related Metrics
 
-Metrics regarding Gateway API can be activated too.
+Metrics related to the Gateway API can be activated as well.
 
 The kube-state-metrics service is required to collect metrics from the Kubernetes API server. Use the following command to enable it:
 
@@ -69,7 +69,7 @@ kubectl port-forward service/prometheus -n monitoring 9090:$PROMETHEUS_PORT
 
 ```
 
-Gateway API related metrics can now be queried, e.g. the number of attached routes to our gateway:
+Gateway API-related metrics can now be queried, e.g., the number of attached routes to the gateway:
 
 ```sh
 curl -s http://localhost:9090/api/v1/query \
@@ -79,11 +79,11 @@ curl -s http://localhost:9090/api/v1/query \
 
 Alternatively, access the Prometheus UI at http://localhost:9090
 
-Additionally in the [documentation](https://gateway.envoyproxy.io/docs/tasks/observability/gateway-api-metrics/#dashboards) there are examples how to import preconfigured dashboards to grafana for Gateway API related metrics.
+Additionally, the [documentation](https://gateway.envoyproxy.io/docs/tasks/observability/gateway-api-metrics/#dashboards) provides examples of how to import preconfigured dashboards into Grafana for Gateway API-related metrics.
 
 ## Logs
 
-The Observability stack included Loki, which is collecting logs that can be queried:
+The observability stack includes Loki, which collects logs that can be queried:
 
 ```sh
 kubectl port-forward -n monitoring svc/loki 3100:3100
@@ -97,7 +97,7 @@ curl -s "http://localhost:3100/loki/api/v1/query_range" --data-urlencode "query=
 
 Documentation used: https://gateway.envoyproxy.io/docs/tasks/observability/proxy-trace/#traces
 
-OTEL Tracing was enabled in `envoyproxy.yml`, traces can be viewed in Grafana (tempo has to be added as datasource first) or via curl (make sure you stop earlier port-forward)
+OTEL tracing was enabled in `envoyproxy.yml`. Traces can be viewed in Grafana (Tempo has to be added as a data source first) or via curl (make sure to stop the earlier port-forward):
 
 ```sh
 kubectl port-forward service/tempo -n monitoring 3100:3100
@@ -108,7 +108,7 @@ kubectl port-forward service/tempo -n monitoring 3100:3100
 curl -s "http://localhost:3100/api/search?limit=5" | jq .traces
 ```
 
-Insert any TraceID gotten from previous command:
+Insert any TraceID obtained from the previous command:
 
 ```sh
 curl -s "http://localhost:3100/api/traces/<TRACEID>" | jq

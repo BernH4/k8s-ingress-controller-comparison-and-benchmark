@@ -4,11 +4,11 @@ shell: bash
 
 # Cluster Configuration
 
-## 1. Prerequisites:
+## 1. Prerequisites
 
-- Kubernetes Cluster with one worker node running and a seperate VirtualMachine with k6 installed to run load Tests
+- Kubernetes cluster with one worker node running and a separate virtual machine with k6 installed to run load tests.
 
-In this tests the following specs were deployed:
+In these tests the following specifications were used:
 
 ### **Performance Tests: VM Specifications**
 
@@ -28,7 +28,7 @@ kubectl label nodes $WORKLOAD_NODE_NAME role=workload
 kubectl taint nodes $WORKLOAD_NODE_NAME dedicated=workload:NoSchedule
 ```
 
-Deploy simple web-app with 10 replicas to ensure the web app won't be the bottleneck:
+Deploy a simple web app with 10 replicas to ensure the web app will not be the bottleneck:
 
 ```sh {"promptEnv":"never"}
 export REPLICAS=10
@@ -81,7 +81,7 @@ spec:
 EOF
 ```
 
-Faking having multiple backends by creating many services but all point to the same backend:
+Simulate having multiple backends by creating many services that all point to the same backend:
 
 ```sh {"promptEnv":"never"}
 export BACKEND_APPLICATIONS=10
@@ -105,10 +105,10 @@ EOF
 done | kubectl apply -f -
 ```
 
-All deployed ressources should now be working fine.
+All deployed resources should now be working:
 
 ```sh {"terminalRows":"20"}
 kubectl get -n default deploy,svc,pods
 ```
 
-The routes to the applications will be configured seperatly in each gateway section.
+The routes to the applications will be configured separately in each gateway section.

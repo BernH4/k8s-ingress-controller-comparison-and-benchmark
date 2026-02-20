@@ -31,7 +31,7 @@ helm install traefik traefik/traefik -f quickstart/values-quickstart.yml --wait
 
 ### Access Dashboard
 
-Port forward the Traefik service (using port 8000 to avoid root permissions):
+Port-forward the Traefik service (using port 8000 to avoid root permissions):
 
 ```sh
 kubectl port-forward svc/traefik 8000:80
@@ -41,7 +41,7 @@ kubectl port-forward svc/traefik 8000:80
 
 ### Deploy Sample Application
 
-Deploy the provided whoami application and expose it via Gateway API:
+Deploy the provided whoami application and expose it via the Gateway API:
 
 ```sh
 kubectl apply -f quickstart/whoami-service.yaml
@@ -61,14 +61,14 @@ curl http://whoami-gatewayapi.localhost:8000
 
 ### Recreate Cluster
 
-Recreate the cluster to continue testing a more production like deployment
+Recreate the cluster to continue testing a more production like deployment:
 
 ```sh
 kind delete cluster -n cluster-traefik
 kind create cluster --config ../../kind-config-3-worker-nodes.yml --name cluster-traefik
 ```
 
-## Production deployment
+## Production Deployment
 
 Documentation used:
 
@@ -78,14 +78,14 @@ Documentation used:
 
 ### Install Traefik
 
-Add the Traefik Helm repository (make sure cluster has been created first):
+Add the Traefik Helm repository (make sure the cluster has been created first):
 
 ```sh
 helm repo add traefik https://traefik.github.io/charts
 helm repo update
 ```
 
-Install Traefik using selfdefined production values:
+Install Traefik using custom production values:
 
 ```sh
 helm install traefik traefik/traefik \
@@ -95,7 +95,7 @@ helm install traefik traefik/traefik \
   --values production/values-production.yml
 ```
 
-As Traefik was configured to be HA (High Available), two traefik pods should now be running:
+As Traefik was configured to be HA (highly available), two Traefik pods should now be running:
 
 ```sh
 kubectl get pods -n traefik
@@ -103,8 +103,8 @@ kubectl get pods -n traefik
 
 ### Access Dashboard
 
-Port forward one traefik pod.
-Here forwarding a pod directly via a deployment is needed, as the dashboard is not exposed publicly anymore
+Port forward one Traefik pod.
+Here, forwarding a pod directly via a deployment is needed, as the dashboard is no longer exposed publicly:
 
 ```sh
 kubectl port-forward -n traefik deployment/traefik 8080:8080
@@ -114,21 +114,21 @@ kubectl port-forward -n traefik deployment/traefik 8080:8080
 
 ### Deployment
 
-Deploy the Traefik specific GatewayClass and Gateway
+Deploy the Traefik specific GatewayClass and Gateway:
 
 ```sh
 kubectl apply -f production/gateway.yml
 kubectl apply -f production/gatewayclass.yml
 ```
 
-Deploy a custom web-app and httproute that will be reused by all gateways.
+Deploy a custom web app and HTTPRoute that will be reused by all gateways:
 
 ```sh
 kubectl apply -f ../../common_config_files/web-app-1.yml
 kubectl apply -f ../../common_config_files/httproute.yml
 ```
 
-All deployed ressources should now be working fine:
+All deployed resources should now be working:
 
 ```sh {"terminalRows":"19"}
 kubectl get -n default gatewayclass,gateway,httproute,deploy,svc,pods
@@ -136,7 +136,7 @@ kubectl get -n default gatewayclass,gateway,httproute,deploy,svc,pods
 
 ### Test Application
 
-Verify the application is accessible
+Verify the application is accessible:
 
 ```sh
 kubectl port-forward -n traefik service/traefik 8000:80
