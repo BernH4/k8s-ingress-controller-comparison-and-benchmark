@@ -80,7 +80,7 @@ Access logs are enabled by default.
 ## Traces
 
 Traces are disabled by default and need to be enabled via environment variables configured in the Helm chart values.
-See `kong/production/values.yml`.
+See `production/values.yml`.
 
 Deploy Grafana Tempo as storage for traces:
 

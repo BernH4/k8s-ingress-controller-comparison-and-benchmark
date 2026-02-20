@@ -28,14 +28,14 @@ Metrics are now visible at: http://localhost:9100/metrics
 ## Logs
 
 Access logs are disabled by default and need to be enabled via Helm chart values.
-See `traefik/production/values-production.yml`.
+See `production/values-production.yml`.
 
 ## Traces
 
 Traces are disabled by default and need to be enabled via Helm chart values.
-See `traefik/production/values-production.yml`.
+See `production/values-production.yml`.
 
-Deploy Grafana Tempo as storage for traces. Traefik is configured to push traces to Tempo in `traefik/production/values-production.yml`.
+Deploy Grafana Tempo as storage for traces. Traefik is configured to push traces to Tempo in `production/values-production.yml`.
 
 ```sh
 helm repo add grafana https://grafana.github.io/helm-charts

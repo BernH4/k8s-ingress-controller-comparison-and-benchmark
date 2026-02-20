@@ -10,7 +10,7 @@ For a more production like setup, an Azure Kubernetes cluster was created and Az
 During setup, note the CLIENT_SECRET and provide it below or in a `.env` file in the root directory.
 
 ```sh
-export $(cat ../.env | xargs)
+export $(cat ../../.env | xargs)
 # Or provide directly:
 # export CLIENT_SECRET=fill_me
 ```
@@ -30,7 +30,7 @@ OIDC is an enterprise plugin, an account has to be created to start a 30-day tri
 Request a [PAT](https://cloud.konghq.com/global/account/tokens) and put it in your `.env` file.
 
 ```sh
-export $(cat ../.env | xargs)
+export $(cat ../../.env | xargs)
 # Or provide directly:
 # export KONNECT_TOKEN=fill_me
 ```
