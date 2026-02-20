@@ -10,24 +10,18 @@ shell: bash
 
 In this tests the following specs were deployed:
 
-- Azure AKS Cluster with Worker Node of type:
-   .... TODO
-- Azure VM with specs:
-   .....TODO
+### **Performance Tests: VM Specifications**
 
-## TMP TODO LOCAL SETUP
-
-```sh
-kind create cluster --config ../kind-config-1-worker-node.yml --name cluster-envoy-gw
-```
+| Node Role | Azure VM Size | vCPUs | Memory (GB) |
+| :--- | :--- | :--- | :--- |
+| Gateway Node | Standard_D8as_v6 | 8 | 32 |
+| Workload Node | Standard_E8pds_v6 | 8 | 64 |
+| Load Generator VM | Standard_D8als_v6 | 8 | 16 |
 
 ### Run Gateway and Workload on two different Nodes
 
 ```sh {"interactive":"false","promptEnv":"never"}
-export GATEWAY_NODE_NAME=aks-gatewaynode-24934390-vmss000002
 export WORKLOAD_NODE_NAME=aks-workloadnode-13792356-vmss000002
-echo "DEBUG: Applying config to Node: $WORKLOAD_NODE_NAME"
-#kubectl label nodes $GATEWAY_NODE_NAME role=gateway
 kubectl label nodes $WORKLOAD_NODE_NAME role=workload
 # Configure Workload Node to not allow any pods to schedule on it
 # Workload Pods will be configured to ignore this taint to be the only pods scheduled on this node
