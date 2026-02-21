@@ -1,5 +1,7 @@
 # k8s-ingress-controller-comparison-and-benchmark
 
+This repository is part of my bachelor’s thesis, comparing the developer experience and performance of Traefik, Kong, and Envoy Gateway.
+
 ## Prerequisites
 
 - Kubectl: https://kubernetes.io/docs/tasks/tools/ (Version used: v1.34.1)
@@ -10,15 +12,7 @@
 - openssl (Version used: 3.0.2)
 - jq (Optional, Version used: 1.6)
 
-*Optional:* The VS Code Extension [RunMe](https://marketplace.visualstudio.com/items?itemName=stateful.runme) is recommended to easily execute provided bash commands directly from the markdown document.
-
-## Deployment & Production Configuration
-
-All gateways were initially deployed using the standard Quickstart Guide. Afterwards, a more production-grade configuration was uniformly applied to all three gateways, incorporating the following features:
-
-- Access Logs: Enabled
-- High Availability: Configured with a minimum of two gateway replicas running on separate nodes.
-- Gateway API CRDs: Automatic creation of "Gateway" and "GatewayClass" resources was disabled.
+**Higly Recommended:** The VS Code Extension [RunMe](https://marketplace.visualstudio.com/items?itemName=stateful.runme) to easily execute provided bash commands directly from the markdown document.
 
 ## Miscellaneous
 
