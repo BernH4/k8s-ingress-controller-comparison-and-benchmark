@@ -112,3 +112,8 @@ kubectl get -n default deploy,svc,pods
 ```
 
 The routes to the applications will be configured separately in each gateway section.
+
+# Load Test VM
+After provisioning the VM for load tests, [install K6](https://grafana.com/docs/k6/latest/set-up/install-k6/) and copy over the following files, required to run the load tests:
+- `run_test.sh`
+- `constant_rps.js`

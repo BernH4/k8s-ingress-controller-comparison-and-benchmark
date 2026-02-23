@@ -125,7 +125,10 @@ watch k top nodes
 watch kubectl top pods -A --sort-by=cpu
 ```
 
-Now execute the k6 load test scripts on the virtual machine.
+Run the k6 load test script on the **virtual machine**. Ensure you update the IP address in `run_test.sh` to the one assigned to your Ingress Controller's load balancer.
+
+Start the performance tests using the following command:
+`./run_test.sh`
 
 ## Reliability Tests
 
